@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/netip"
 
+	"github.com/purpose-robot/blips-and-chitz/devices"
 	"github.com/purpose-robot/blips-and-chitz/internal/netconf"
-	"github.com/purpose-robot/blips-and-chitz/inventory"
 )
 
 type DeviceGateway struct {
@@ -21,7 +21,7 @@ func NewDeviceGateway(username, password string) *DeviceGateway {
 	}
 }
 
-func (d *DeviceGateway) GatherFacts(ctx context.Context, ipAddress netip.Addr) (*inventory.Facts, error) {
+func (d *DeviceGateway) GatherFacts(ctx context.Context, ipAddress netip.Addr) (*devices.Facts, error) {
 	session, err := netconf.Dial(ctx, ipAddress.String(), d.username, d.password)
 	if err != nil {
 		return nil, fmt.Errorf("ext.cisco.gatherFacts: %w", err)

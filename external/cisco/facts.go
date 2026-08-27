@@ -4,7 +4,7 @@ import (
 	"net/netip"
 	"strings"
 
-	"github.com/purpose-robot/blips-and-chitz/inventory"
+	"github.com/purpose-robot/blips-and-chitz/devices"
 )
 
 const filterFacts = `
@@ -27,21 +27,21 @@ const (
 )
 
 type factsReply struct {
-	Hostname    string            `xml:"data>native>hostname"`
-	MAC         string            `xml:"data>stack-oper-data>stack-info>stack-mac-address"`
-	Neighbors   []neighborDetail  `xml:"data>cdp-neighbor-details>cdp-neighbor-detail"`
-	SWVersion   string            `xml:"data>native>version"`
-	StackNodes  []stackNode       `xml:"data>stack-oper-data>stack-node"`
-	Inventories []deviceInventory `xml:"data>device-hardware-data>device-hardware>device-inventory"`
+	Hostname    string           `xml:"data>native>hostname"`
+	MAC         string           `xml:"data>stack-oper-data>stack-info>stack-mac-address"`
+	Neighbors   []neighborDetail `xml:"data>cdp-neighbor-details>cdp-neighbor-detail"`
+	SWVersion   string           `xml:"data>native>version"`
+	StackNodes  []stackNode      `xml:"data>stack-oper-data>stack-node"`
+	Inventories []inventory      `xml:"data>device-hardware-data>device-hardware>device-inventory"`
 }
 
-func (r *factsReply) parse() *inventory.Facts {
-	facts := &inventory.Facts{
+func (r *factsReply) parse() *devices.Facts {
+	facts := &devices.Facts{
 		Hostname:  r.Hostname,
 		SWVersion: r.SWVersion,
 	}
 
-	if mac, err := inventory.ParseMAC(r.MAC); err == nil {
+	if mac, err := devices.ParseMAC(r.MAC); err == nil {
 		facts.MAC = mac
 	}
 
@@ -70,7 +70,7 @@ func (r *factsReply) chassisModels() map[int]string {
 	return models
 }
 
-type deviceInventory struct {
+type inventory struct {
 	HWType     string `xml:"hw-type"`
 	PartNumber string `xml:"part-number"`
 	HWDevIndex int    `xml:"hw-dev-index"`
@@ -83,31 +83,31 @@ type stackNode struct {
 	ChassisNumber int    `xml:"chassis-number"`
 }
 
-func (n stackNode) parse(model string) inventory.StackMember {
-	member := inventory.StackMember{
+func (n stackNode) parse(model string) devices.StackMember {
+	member := devices.StackMember{
 		Slot:         n.ChassisNumber,
 		Role:         parseMemberRole(n.Role),
 		Model:        model,
 		SerialNumber: n.SerialNumber,
 	}
 
-	if mac, err := inventory.ParseMAC(n.MAC); err == nil {
+	if mac, err := devices.ParseMAC(n.MAC); err == nil {
 		member.MAC = mac
 	}
 
 	return member
 }
 
-func parseMemberRole(role string) inventory.MemberRole {
+func parseMemberRole(role string) devices.MemberRole {
 	switch role {
 	case roleActive:
-		return inventory.RolePrimary
+		return devices.RolePrimary
 
 	case roleStandby:
-		return inventory.RoleStandby
+		return devices.RoleStandby
 
 	default:
-		return inventory.RoleMember
+		return devices.RoleMember
 	}
 }
 
@@ -121,8 +121,8 @@ type neighborDetail struct {
 	NeighborPortMAC string `xml:"neighbor-port-mac"`
 }
 
-func (n neighborDetail) parse() inventory.Neighbor {
-	neighbor := inventory.Neighbor{
+func (n neighborDetail) parse() devices.Neighbor {
+	neighbor := devices.Neighbor{
 		LocalPort:    n.LocalPort,
 		RemotePort:   n.RemotePort,
 		Model:        n.Platform,
@@ -134,26 +134,26 @@ func (n neighborDetail) parse() inventory.Neighbor {
 		neighbor.IPAddress = ip
 	}
 
-	if mac, err := inventory.ParseMAC(n.NeighborPortMAC); err == nil {
+	if mac, err := devices.ParseMAC(n.NeighborPortMAC); err == nil {
 		neighbor.MAC = mac
 	}
 
 	return neighbor
 }
 
-func parseCapabilities(names string) []inventory.Capability {
-	var capabilities []inventory.Capability
+func parseCapabilities(names string) []devices.Capability {
+	var capabilities []devices.Capability
 
 	for name := range strings.FieldsSeq(names) {
 		switch name {
 		case "Switch":
-			capabilities = append(capabilities, inventory.CapabilitySwitch)
+			capabilities = append(capabilities, devices.CapabilitySwitch)
 
 		case "Router":
-			capabilities = append(capabilities, inventory.CapabilityRouter)
+			capabilities = append(capabilities, devices.CapabilityRouter)
 
 		case "Trans-Bridge":
-			capabilities = append(capabilities, inventory.CapabilityAccessPoint)
+			capabilities = append(capabilities, devices.CapabilityAccessPoint)
 		}
 	}
 

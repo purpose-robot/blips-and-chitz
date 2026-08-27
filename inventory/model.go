@@ -10,12 +10,12 @@ import (
 
 type Device struct {
 	ID         uuid.UUID  `json:"id"`
+	Tags       []string   `json:"tags,omitzero"`
+	Platform   Platform   `json:"platform"`
+	Facts      *Facts     `json:"facts,omitzero"`
+	IPAddress  netip.Addr `json:"ip_address"`
 	Version    int64      `json:"-"`
 	CreatedAt  time.Time  `json:"created_at"`
-	Tags       []string   `json:"tags,omitzero"`
-	MgmtIP     netip.Addr `json:"mgmt_ip"`
-	Platform   Platform   `json:"platform"`
-	Observed   *Observed  `json:"observed,omitzero"`
 	SyncError  string     `json:"sync_error,omitzero"`
 	LastSyncAt time.Time  `json:"last_sync_at,omitzero"`
 	LastSeenAt time.Time  `json:"last_seen_at,omitzero"`
@@ -44,21 +44,6 @@ func (d Device) Status(maxAge time.Duration) SyncStatus {
 	default:
 		return StatusOK
 	}
-}
-
-type Platform string
-
-const (
-	PlatformAOSCX Platform = "aos_cx"
-	PlatformIOSXE Platform = "ios_xe"
-)
-
-type Observed struct {
-	MAC             MAC           `json:"mac"`
-	Hostname        string        `json:"hostname"`
-	Neighbors       []Neighbor    `json:"neighbors,omitzero"`
-	StackMembers    []StackMember `json:"stack_members,omitzero"`
-	SoftwareVersion string        `json:"software_version"`
 }
 
 type MAC [6]byte
@@ -94,6 +79,21 @@ func ParseMAC(m string) (MAC, error) {
 	return MAC(mac), nil
 }
 
+type Facts struct {
+	MAC          MAC           `json:"mac"`
+	Hostname     string        `json:"hostname"`
+	Firmware     string        `json:"firmware"`
+	Neighbors    []Neighbor    `json:"neighbors,omitzero"`
+	StackMembers []StackMember `json:"stack_members,omitzero"`
+}
+
+type Platform string
+
+const (
+	PlatformAOSCX Platform = "aos_cx"
+	PlatformIOSXE Platform = "ios_xe"
+)
+
 type StackMember struct {
 	MAC          MAC        `json:"mac"`
 	Slot         int        `json:"slot"`
@@ -114,11 +114,11 @@ type Neighbor struct {
 	LocalPort    string       `json:"local_port"`
 	RemotePort   string       `json:"remote_port"`
 	Capabilities []Capability `json:"capabilities"`
-
-	MAC      MAC        `json:"mac,omitzero"`
-	Model    string     `json:"model,omitzero"`
-	MgmtIP   netip.Addr `json:"mgmt_ip,omitzero"`
-	Hostname string     `json:"hostname,omitzero"`
+	// The following information are optional.
+	MAC       MAC        `json:"mac,omitzero"`
+	Model     string     `json:"model,omitzero"`
+	Hostname  string     `json:"hostname,omitzero"`
+	IPAddress netip.Addr `json:"ip_address,omitzero"`
 }
 
 type Capability string

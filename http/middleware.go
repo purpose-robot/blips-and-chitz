@@ -15,10 +15,11 @@ import (
 
 func (s *Server) logRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		now := time.Now()
-
-		rwx := httpx.NewResponseWriter(w)
-		ctx := slogx.WithFields(r.Context())
+		var (
+			now = time.Now()
+			rwx = httpx.NewResponseWriter(w)
+			ctx = slogx.WithFields(r.Context())
+		)
 
 		next.ServeHTTP(rwx, r.WithContext(ctx))
 

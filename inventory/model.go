@@ -80,9 +80,9 @@ func ParseMAC(m string) (MAC, error) {
 }
 
 type Facts struct {
-	MAC          MAC           `json:"mac"`
 	Hostname     string        `json:"hostname"`
-	Firmware     string        `json:"firmware"`
+	MAC          MAC           `json:"mac_address"`
+	SWVersion    string        `json:"software_version"`
 	Neighbors    []Neighbor    `json:"neighbors,omitzero"`
 	StackMembers []StackMember `json:"stack_members,omitzero"`
 }
@@ -95,7 +95,7 @@ const (
 )
 
 type StackMember struct {
-	MAC          MAC        `json:"mac"`
+	MAC          MAC        `json:"mac_address"`
 	Slot         int        `json:"slot"`
 	Role         MemberRole `json:"role"`
 	Model        string     `json:"model"`
@@ -114,7 +114,7 @@ type Neighbor struct {
 	LocalPort    string       `json:"local_port"`
 	RemotePort   string       `json:"remote_port"`
 	Capabilities []Capability `json:"capabilities"`
-	// The following information are optional.
+
 	MAC       MAC        `json:"mac,omitzero"`
 	Model     string     `json:"model,omitzero"`
 	Hostname  string     `json:"hostname,omitzero"`

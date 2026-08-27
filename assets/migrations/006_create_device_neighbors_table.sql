@@ -5,10 +5,10 @@ CREATE TABLE device_neighbors (
     local_port   text    NOT NULL,
     remote_port  text    NOT NULL,
     capabilities text[]  NOT NULL DEFAULT '{}',
-    mac          macaddr,
+    mac_address  macaddr,
     model        text    NOT NULL DEFAULT '',
-    mgmt_ip      inet,
     hostname     text    NOT NULL DEFAULT '',
+    ip_address   inet,
 
     UNIQUE (device_id, local_port, remote_port)
 );

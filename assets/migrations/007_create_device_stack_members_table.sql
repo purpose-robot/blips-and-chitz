@@ -1,7 +1,7 @@
 -- +goose Up
 CREATE TABLE device_stack_members (
     device_id     uuid    NOT NULL REFERENCES devices (id) ON DELETE CASCADE,
-    mac           macaddr NOT NULL,
+    mac_address   macaddr NOT NULL,
     slot          integer NOT NULL,
     role          text    NOT NULL,
     model         text    NOT NULL,

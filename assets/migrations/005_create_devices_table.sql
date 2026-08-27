@@ -1,17 +1,17 @@
 -- +goose Up
 CREATE TABLE devices (
-    id                        uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
-    version                   bigint       NOT NULL DEFAULT 1,
-    created_at                timestamptz  NOT NULL DEFAULT now(),
-    tags                      text[]       NOT NULL DEFAULT '{}',
-    management_ip_address     inet         NOT NULL UNIQUE,
-    platform                  text         NOT NULL,
-    hostname                  text,
-    mac_address               macaddr,
-    software_version          text,
-    sync_error                text         NOT NULL DEFAULT '',
-    last_sync_at              timestamptz,
-    last_seen_at              timestamptz
+    id                    uuid         PRIMARY KEY DEFAULT gen_random_uuid(),
+    version               bigint       NOT NULL DEFAULT 1,
+    created_at            timestamptz  NOT NULL DEFAULT now(),
+    tags                  text[]       NOT NULL DEFAULT '{}',
+    management_ip_address inet         NOT NULL UNIQUE,
+    platform              text         NOT NULL,
+    hostname              text,
+    mac_address           macaddr,
+    software_version      text,
+    sync_error            text         NOT NULL DEFAULT '',
+    last_sync_at          timestamptz,
+    last_seen_at          timestamptz
 );
 
 CREATE INDEX devices_tags_idx ON devices USING gin (tags);

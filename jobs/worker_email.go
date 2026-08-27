@@ -43,7 +43,7 @@ func (w *TokenEmailWorker) Work(ctx context.Context, job *river.Job[TokenEmailAr
 
 	err := w.mailer.Send(ctx, job.Args.Recipient, data, job.Args.Template)
 	if err != nil {
-		return fmt.Errorf("jobs.emails.worker: %w", err)
+		return fmt.Errorf("jobs.emails: %w", err)
 	}
 
 	return nil

@@ -13,7 +13,7 @@ type Device struct {
 	Tags       []string   `json:"tags,omitzero"`
 	Platform   Platform   `json:"platform"`
 	Facts      *Facts     `json:"facts,omitzero"`
-	IPAddress  netip.Addr `json:"ip_address"`
+	MgmtIPAddr netip.Addr `json:"management_ip_address"`
 	Version    int64      `json:"-"`
 	CreatedAt  time.Time  `json:"created_at"`
 	SyncError  string     `json:"sync_error,omitzero"`
@@ -115,7 +115,7 @@ type Neighbor struct {
 	RemotePort   string       `json:"remote_port"`
 	Capabilities []Capability `json:"capabilities"`
 
-	MAC       MAC        `json:"mac,omitzero"`
+	MAC       MAC        `json:"mac_address,omitzero"`
 	Model     string     `json:"model,omitzero"`
 	Hostname  string     `json:"hostname,omitzero"`
 	IPAddress netip.Addr `json:"ip_address,omitzero"`

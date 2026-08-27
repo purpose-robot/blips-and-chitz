@@ -1,0 +1,11 @@
+https://rednafi.com/go/repo-txn-uow
+https://rednafi.com/go/app-structure
+https://rednafi.com/go/gateway-pattern
+https://rednafi.com/go/gateway-pattern
+https://rednafi.com/go/hoist-wire-plumb
+https://rednafi.com/go/error-translation
+https://rednafi.com/go/typesafe-slogging
+https://rednafi.com/go/to-wrap-or-not-to-wrap
+https://rednafi.com/go/supervised-fire-and-forget
+https://rednafi.com/shards/2026/04/no-stacked-loglines
+https://rednafi.com/shards/2026/03/transactions-with-repository-pattern

@@ -13,7 +13,7 @@ type Device struct {
 	Tags       []string   `json:"tags,omitzero"`
 	Platform   Platform   `json:"platform"`
 	Facts      *Facts     `json:"facts,omitzero"`
-	MgmtIPAddr netip.Addr `json:"management_ip_address"`
+	IPAddress  netip.Addr `json:"ip_address"`
 	Version    int64      `json:"-"`
 	CreatedAt  time.Time  `json:"created_at"`
 	SyncError  string     `json:"sync_error,omitzero"`

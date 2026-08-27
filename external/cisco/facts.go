@@ -85,10 +85,10 @@ type stackNode struct {
 
 func (n stackNode) parse(model string) devices.StackMember {
 	member := devices.StackMember{
-		Slot:         n.ChassisNumber,
-		Role:         parseMemberRole(n.Role),
-		Model:        model,
-		SerialNumber: n.SerialNumber,
+		Role:          parseMemberRole(n.Role),
+		Model:         model,
+		SerialNumber:  n.SerialNumber,
+		ChassisNumber: n.ChassisNumber,
 	}
 
 	if mac, err := devices.ParseMAC(n.MAC); err == nil {

@@ -95,11 +95,11 @@ const (
 )
 
 type StackMember struct {
-	MAC          MAC        `json:"mac_address"`
-	Slot         int        `json:"slot"`
-	Role         MemberRole `json:"role"`
-	Model        string     `json:"model"`
-	SerialNumber string     `json:"serial_number"`
+	MAC           MAC        `json:"mac_address"`
+	Role          MemberRole `json:"role"`
+	Model         string     `json:"model"`
+	SerialNumber  string     `json:"serial_number"`
+	ChassisNumber int        `json:"chassis_number"`
 }
 
 type MemberRole string

@@ -1,6 +1,10 @@
 github.com/alexedwards/argon2id v1.0.0 h1:wJzDx66hqWX7siL/SRUmgz3F8YMrd/nfX/xHHcQQP0w=
 github.com/alexedwards/argon2id v1.0.0/go.mod h1:tYKkqIjzXvZdzPvADMWOEZ+l6+BD6CtBXMj5fnJppiw=
+github.com/carlmontanari/difflibgo v0.0.0-20240227210139-93685b1c22ae h1:h4sxL/AXg3FRPf+sT2Y4daEQQE/UAkNAM3U0t4Cgha8=
+github.com/carlmontanari/difflibgo v0.0.0-20240227210139-93685b1c22ae/go.mod h1:+3MuSIeC3qmdSesR12cTLeb47R/Vvo+bHdB6hC5HShk=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/ebitengine/purego v0.10.2 h1:W809HbnvzAxgdm+aOvlSekrM16wGCdT/e76+9tS7gzE=
+github.com/ebitengine/purego v0.10.2/go.mod h1:iIjxzd6CiRiOG0UyXP+V1+jWqUXVjPKLAI0mRfJZTmQ=
 github.com/jackc/pgerrcode v0.0.0-20250907135507-afb5586c32a6 h1:D/V0gu4zQ3cL2WKeVNVM4r2gLxGGf6McLwgXzRTo2RQ=
 github.com/jackc/pgerrcode v0.0.0-20250907135507-afb5586c32a6/go.mod h1:a/s9Lp5W7n/DD0VrVoyJ00FbP2ytTPDVOivvn2bMlds=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
@@ -24,6 +28,10 @@ github.com/riverqueue/river/rivertype v0.45.0 h1:AITFM9ZB+kkd/PsWT7YuQ211V/kPCSv
 github.com/riverqueue/river/rivertype v0.45.0/go.mod h1:XKkcRQR6zm8RR/JQa1Q2ywpj8uXQu21quPa4Lpw1Xhw=
 github.com/robfig/cron/v3 v3.0.1 h1:WdRxkvbJztn8LMz/QEvLN5sBU+xKpSqwwUO1Pjr4qDs=
 github.com/robfig/cron/v3 v3.0.1/go.mod h1:eQICP3HwyT7UooqI/z+Ov+PtYAWygg1TEWWzGIFLtro=
+github.com/scrapli/scrapligo/v2 v2.0.0-rc.18 h1:pabfT82Kmbge4K1Rsp4Pee3mVqIvj/oqMozaKZOJrJk=
+github.com/scrapli/scrapligo/v2 v2.0.0-rc.18/go.mod h1:UzJSuZTUNluFbOAdt3H0NRxM+6K8KwI2MA/x9rSB6xI=
+github.com/sirikothe/gotextfsm v1.1.0 h1:Hd6S3g4383e8b0awZQEPr+d1QPVxxnR/3NU1Kw4dI/Y=
+github.com/sirikothe/gotextfsm v1.1.0/go.mod h1:CJYqpTg9u5VPCoD0VEl9E68prCIiWQD8m457k098DdQ=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=

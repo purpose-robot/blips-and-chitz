@@ -26,12 +26,12 @@ func (TokenEmailArgs) InsertOpts() river.InsertOpts {
 
 type TokenEmailWorker struct {
 	river.WorkerDefaults[TokenEmailArgs]
-	mailer mailerGateway
+	email emailGateway
 }
 
-func NewTokenEmailWorker(mailer mailerGateway) *TokenEmailWorker {
+func NewTokenEmailWorker(email emailGateway) *TokenEmailWorker {
 	return &TokenEmailWorker{
-		mailer: mailer,
+		email: email,
 	}
 }
 
@@ -41,7 +41,7 @@ func (w *TokenEmailWorker) Work(ctx context.Context, job *river.Job[TokenEmailAr
 		"plaintext": job.Args.Plaintext,
 	}
 
-	err := w.mailer.Send(ctx, job.Args.Recipient, data, job.Args.Template)
+	err := w.email.Send(ctx, job.Args.Recipient, data, job.Args.Template)
 	if err != nil {
 		return fmt.Errorf("jobs.emails: %w", err)
 	}

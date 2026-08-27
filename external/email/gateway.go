@@ -33,14 +33,14 @@ func NewEmailGateway(host string, port int, from, username, password string) (*E
 	return &EmailGateway{from: from, client: client}, nil
 }
 
-func (m *EmailGateway) Send(ctx context.Context, recipient string, data any, patterns ...string) error {
+func (e *EmailGateway) Send(ctx context.Context, recipient string, data any, patterns ...string) error {
 	for i := range patterns {
 		patterns[i] = "emails/" + patterns[i]
 	}
 
 	msg := mail.NewMsg()
 
-	if err := msg.From(m.from); err != nil {
+	if err := msg.From(e.from); err != nil {
 		return fmt.Errorf("ext.email.send: setting sender: %v", err)
 	}
 
@@ -81,7 +81,7 @@ func (m *EmailGateway) Send(ctx context.Context, recipient string, data any, pat
 		msg.AddAlternativeString(mail.TypeTextHTML, htmlContent.String())
 	}
 
-	err = m.client.DialAndSendWithContext(ctx, msg)
+	err = e.client.DialAndSendWithContext(ctx, msg)
 	if err != nil {
 		return fmt.Errorf("ext.email.send: sending mail to recipient %s: %v", recipient, err)
 	}

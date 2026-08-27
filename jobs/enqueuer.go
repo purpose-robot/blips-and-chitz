@@ -9,7 +9,7 @@ import (
 	"github.com/riverqueue/river"
 )
 
-type mailerGateway interface {
+type emailGateway interface {
 	Send(context.Context, string, any, ...string) error
 }
 

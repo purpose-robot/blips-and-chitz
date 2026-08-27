@@ -14,7 +14,7 @@ ALTER TABLE device_stack_members
     ADD CONSTRAINT device_stack_members_role_check
     CHECK (role IN ('member', 'primary', 'standby'));
 
-CREATE INDEX device_stack_members_mac_idx ON device_stack_members (mac);
+CREATE INDEX device_stack_members_mac_address_idx ON device_stack_members (mac_address);
 CREATE INDEX device_stack_members_serial_number_idx ON device_stack_members (serial_number);
 
 -- +goose Down

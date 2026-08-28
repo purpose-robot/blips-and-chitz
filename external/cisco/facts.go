@@ -27,12 +27,12 @@ const (
 )
 
 type factsReply struct {
-	Hostname    string           `xml:"data>native>hostname"`
-	MAC         string           `xml:"data>stack-oper-data>stack-info>stack-mac-address"`
-	Neighbors   []neighborDetail `xml:"data>cdp-neighbor-details>cdp-neighbor-detail"`
-	SWVersion   string           `xml:"data>native>version"`
-	StackNodes  []stackNode      `xml:"data>stack-oper-data>stack-node"`
-	Inventories []inventory      `xml:"data>device-hardware-data>device-hardware>device-inventory"`
+	Hostname    string      `xml:"data>native>hostname"`
+	MAC         string      `xml:"data>stack-oper-data>stack-info>stack-mac-address"`
+	SWVersion   string      `xml:"data>native>version"`
+	Neighbors   []neighbor  `xml:"data>cdp-neighbor-details>cdp-neighbor-detail"`
+	StackNodes  []stackNode `xml:"data>stack-oper-data>stack-node"`
+	Inventories []inventory `xml:"data>device-hardware-data>device-hardware>device-inventory"`
 }
 
 func (r *factsReply) parse() *devices.Facts {
@@ -111,7 +111,7 @@ func parseMemberRole(role string) devices.MemberRole {
 	}
 }
 
-type neighborDetail struct {
+type neighbor struct {
 	LocalPort       string `xml:"local-intf-name"`
 	RemotePort      string `xml:"port-id"`
 	IPAddr          string `xml:"ip-address"`
@@ -121,7 +121,7 @@ type neighborDetail struct {
 	NeighborPortMAC string `xml:"neighbor-port-mac"`
 }
 
-func (n neighborDetail) parse() devices.Neighbor {
+func (n neighbor) parse() devices.Neighbor {
 	neighbor := devices.Neighbor{
 		LocalPort:    n.LocalPort,
 		RemotePort:   n.RemotePort,

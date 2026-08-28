@@ -83,6 +83,19 @@ type stackNode struct {
 	ChassisNumber int    `xml:"chassis-number"`
 }
 
+func parseMemberRole(role string) devices.MemberRole {
+	switch role {
+	case roleActive:
+		return devices.RolePrimary
+
+	case roleStandby:
+		return devices.RoleStandby
+
+	default:
+		return devices.RoleMember
+	}
+}
+
 func (n stackNode) parse(model string) devices.StackMember {
 	member := devices.StackMember{
 		Slot:         n.ChassisNumber,
@@ -96,19 +109,6 @@ func (n stackNode) parse(model string) devices.StackMember {
 	}
 
 	return member
-}
-
-func parseMemberRole(role string) devices.MemberRole {
-	switch role {
-	case roleActive:
-		return devices.RolePrimary
-
-	case roleStandby:
-		return devices.RoleStandby
-
-	default:
-		return devices.RoleMember
-	}
 }
 
 type cdpNeighbor struct {

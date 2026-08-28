@@ -27,25 +27,25 @@ const (
 )
 
 type factsReply struct {
-	Hostname    string      `xml:"data>native>hostname"`
-	MAC         string      `xml:"data>stack-oper-data>stack-info>stack-mac-address"`
-	SWVersion   string      `xml:"data>native>version"`
-	Neighbors   []neighbor  `xml:"data>cdp-neighbor-details>cdp-neighbor-detail"`
-	StackNodes  []stackNode `xml:"data>stack-oper-data>stack-node"`
-	Inventories []inventory `xml:"data>device-hardware-data>device-hardware>device-inventory"`
+	Version           string            `xml:"data>native>version"`
+	Hostname          string            `xml:"data>native>hostname"`
+	StackMAC          string            `xml:"data>stack-oper-data>stack-info>stack-mac-address"`
+	StackNodes        []stackNode       `xml:"data>stack-oper-data>stack-node"`
+	CDPNeighbors      []cdpNeighbor     `xml:"data>cdp-neighbor-details>cdp-neighbor-detail"`
+	DeviceInventories []deviceInventory `xml:"data>device-hardware-data>device-hardware>device-inventory"`
 }
 
 func (r *factsReply) parse() *devices.Facts {
 	facts := &devices.Facts{
-		Hostname:  r.Hostname,
-		SWVersion: r.SWVersion,
+		Hostname:        r.Hostname,
+		SoftwareVersion: r.Version,
 	}
 
-	if mac, err := devices.ParseMAC(r.MAC); err == nil {
+	if mac, err := devices.ParseMAC(r.StackMAC); err == nil {
 		facts.MAC = mac
 	}
 
-	for _, detail := range r.Neighbors {
+	for _, detail := range r.CDPNeighbors {
 		facts.Neighbors = append(facts.Neighbors, detail.parse())
 	}
 
@@ -59,9 +59,9 @@ func (r *factsReply) parse() *devices.Facts {
 }
 
 func (r *factsReply) chassisModels() map[int]string {
-	models := make(map[int]string, len(r.Inventories))
+	models := make(map[int]string, len(r.DeviceInventories))
 
-	for _, item := range r.Inventories {
+	for _, item := range r.DeviceInventories {
 		if item.HWType == hwTypeChassis {
 			models[item.HWDevIndex] = item.PartNumber
 		}
@@ -70,7 +70,7 @@ func (r *factsReply) chassisModels() map[int]string {
 	return models
 }
 
-type inventory struct {
+type deviceInventory struct {
 	HWType     string `xml:"hw-type"`
 	PartNumber string `xml:"part-number"`
 	HWDevIndex int    `xml:"hw-dev-index"`
@@ -85,10 +85,10 @@ type stackNode struct {
 
 func (n stackNode) parse(model string) devices.StackMember {
 	member := devices.StackMember{
-		Role:          parseMemberRole(n.Role),
-		Model:         model,
-		SerialNumber:  n.SerialNumber,
-		ChassisNumber: n.ChassisNumber,
+		Slot:         n.ChassisNumber,
+		Role:         parseMemberRole(n.Role),
+		Model:        model,
+		SerialNumber: n.SerialNumber,
 	}
 
 	if mac, err := devices.ParseMAC(n.MAC); err == nil {
@@ -111,26 +111,26 @@ func parseMemberRole(role string) devices.MemberRole {
 	}
 }
 
-type neighbor struct {
-	LocalPort       string `xml:"local-intf-name"`
-	RemotePort      string `xml:"port-id"`
-	IPAddr          string `xml:"ip-address"`
+type cdpNeighbor struct {
+	LocalIntfName   string `xml:"local-intf-name"`
+	PortID          string `xml:"port-id"`
+	IPAddress       string `xml:"ip-address"`
 	DeviceName      string `xml:"device-name"`
 	Capabilities    string `xml:"capability"`
 	Platform        string `xml:"platform-name"`
 	NeighborPortMAC string `xml:"neighbor-port-mac"`
 }
 
-func (n neighbor) parse() devices.Neighbor {
+func (n cdpNeighbor) parse() devices.Neighbor {
 	neighbor := devices.Neighbor{
-		LocalPort:    n.LocalPort,
-		RemotePort:   n.RemotePort,
+		LocalPort:    n.LocalIntfName,
+		RemotePort:   n.PortID,
 		Model:        n.Platform,
 		Hostname:     n.DeviceName,
 		Capabilities: parseCapabilities(n.Capabilities),
 	}
 
-	if ip, err := netip.ParseAddr(n.IPAddr); err == nil {
+	if ip, err := netip.ParseAddr(n.IPAddress); err == nil {
 		neighbor.IPAddress = ip
 	}
 

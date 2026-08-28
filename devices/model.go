@@ -80,11 +80,11 @@ func ParseMAC(m string) (MAC, error) {
 }
 
 type Facts struct {
-	Hostname     string        `json:"hostname"`
-	MAC          MAC           `json:"mac_address"`
-	SWVersion    string        `json:"software_version"`
-	Neighbors    []Neighbor    `json:"neighbors,omitzero"`
-	StackMembers []StackMember `json:"stack_members,omitzero"`
+	Hostname        string        `json:"hostname"`
+	MAC             MAC           `json:"mac_address"`
+	SoftwareVersion string        `json:"software_version"`
+	Neighbors       []Neighbor    `json:"neighbors,omitzero"`
+	StackMembers    []StackMember `json:"stack_members,omitzero"`
 }
 
 type Platform string
@@ -95,11 +95,11 @@ const (
 )
 
 type StackMember struct {
-	MAC           MAC        `json:"mac_address"`
-	Role          MemberRole `json:"role"`
-	Model         string     `json:"model"`
-	SerialNumber  string     `json:"serial_number"`
-	ChassisNumber int        `json:"chassis_number"`
+	MAC          MAC        `json:"mac_address"`
+	Slot         int        `json:"slot"`
+	Role         MemberRole `json:"role"`
+	Model        string     `json:"model"`
+	SerialNumber string     `json:"serial_number"`
 }
 
 type MemberRole string
@@ -113,12 +113,11 @@ const (
 type Neighbor struct {
 	LocalPort    string       `json:"local_port"`
 	RemotePort   string       `json:"remote_port"`
+	MAC          MAC          `json:"mac_address,omitzero"`
+	Model        string       `json:"model,omitzero"`
+	Hostname     string       `json:"hostname,omitzero"`
+	IPAddress    netip.Addr   `json:"ip_address,omitzero"`
 	Capabilities []Capability `json:"capabilities"`
-
-	MAC       MAC        `json:"mac_address,omitzero"`
-	Model     string     `json:"model,omitzero"`
-	Hostname  string     `json:"hostname,omitzero"`
-	IPAddress netip.Addr `json:"ip_address,omitzero"`
 }
 
 type Capability string
